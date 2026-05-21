@@ -12,8 +12,12 @@ public class GotaBuena extends Gota {
     }
 
     @Override
-    public void alColisionar(Tarro tarro) {
+    protected void aplicarEfecto(Tarro tarro) {
         tarro.sumarPuntos(10);
+    }
+
+    @Override
+    protected void reproducirSonido() {
         dropSound.play();
     }
 }

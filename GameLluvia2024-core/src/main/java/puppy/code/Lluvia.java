@@ -60,8 +60,8 @@ public class Lluvia {
             }
             
             if(gota.getArea().overlaps(tarro.getArea())) { 
-                // MAGIA DEL POLIMORFISMO: La gota decide qué hacer al chocar
-                gota.alColisionar(tarro);
+                // POLIMORFISMO: La gota decide que hacer al chocar
+                gota.procesarColision(tarro);
                 gotas.removeIndex(i);
             }
         }   
