@@ -35,13 +35,24 @@ public class Lluvia {
         float x = MathUtils.random(0, 800 - 64);
         float y = 480;
         
+        // Iniciamos el constructor con la posicion
+        GotaBuilder builder = new GotaBuilder().setPosicion(x, y);
+        
         if (MathUtils.random(1, 10) < 3) {
-            // ¡Las gotas malas ahora tienen la estrategia ZigZag para molestar al jugador!
-            gotas.add(new GotaMala(x, y, gotaMala, new MovimientoZigZag()));
+            // Ensamblamos una gota mala
+            builder.setTipo(2)
+                   .setTextura(gotaMala)
+                   .setEstrategia(new MovimientoZigZag());
         } else {
-            // Las gotas buenas usan la estrategia clásica
-            gotas.add(new GotaBuena(x, y, gotaBuena, dropSound, new MovimientoCaidaRecta()));
+            // Ensamblamos una gota buena
+            builder.setTipo(1)
+                   .setTextura(gotaBuena)
+                   .setSonido(dropSound)
+                   .setEstrategia(new MovimientoCaidaRecta());
         }
+        
+        // Fabricamos la gota y la añadimos a la lista
+        gotas.add(builder.build());
         lastDropTime = TimeUtils.nanoTime();
     }
     
