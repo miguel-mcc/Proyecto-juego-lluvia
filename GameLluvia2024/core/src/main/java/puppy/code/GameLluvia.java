@@ -1,0 +1,113 @@
+package puppy.code;
+
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ScreenUtils;
+
+public class GameLluvia extends ApplicationAdapter {
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
+    private BitmapFont font;
+    
+    private Tarro tarro;
+    private Lluvia lluvia;
+    
+    // VARIABLES DE ESTADO DEL JUEGO
+    // 0 = Menú Principal | 1 = Jugando | 2 = Game Over
+    private int estado = 0; 
+
+    @Override
+    public void create () {
+        font = new BitmapFont(); 
+        
+        // Cargar recursos (Audio y Texturas)
+        Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
+        tarro = new Tarro(new Texture(Gdx.files.internal("bucket.png")), hurtSound);
+        
+        Texture gotaBuena = new Texture(Gdx.files.internal("drop.png"));
+        Texture gotaMala = new Texture(Gdx.files.internal("dropBad.png"));
+        Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
+        Music rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
+        
+        lluvia = new Lluvia(gotaBuena, gotaMala, dropSound, rainMusic);
+        
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 800, 480);
+        batch = new SpriteBatch();
+    }
+    
+    // Método que prepara todo para empezar una partida nueva
+    private void iniciarJuego() {
+        GameManager.getInstancia().reiniciar(); // Resetea vidas y puntos
+        tarro.crear();
+        lluvia.crear();
+        estado = 1; // Pasamos al estado "Jugando"
+    }
+
+    @Override
+    public void render () {
+        // Limpia la pantalla
+        ScreenUtils.clear(0, 0, 0.2f, 1);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        
+        // --- MÁQUINA DE ESTADOS ---
+        
+        if (estado == 0) {
+            // PANTALLA: MENÚ PRINCIPAL
+            font.draw(batch, "RECOLECTOR DE LLUVIA", 320, 300);
+            font.draw(batch, "Presiona ENTER para comenzar", 300, 250);
+            
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                iniciarJuego();
+            }
+            
+        } else if (estado == 1) {
+            // PANTALLA: JUGANDO
+            font.draw(batch, "Gotas totales: " + GameManager.getInstancia().getPuntos(), 5, 475);
+            font.draw(batch, "Vidas : " + GameManager.getInstancia().getVidas(), 720, 475);
+            
+            if (!tarro.estaHerido()) {
+                tarro.actualizarMovimiento();       
+                lluvia.actualizarMovimiento(tarro);    
+            }
+            
+            tarro.dibujar(batch);
+            lluvia.actualizarDibujoLluvia(batch);
+            
+            // Comprobar si nos quedamos sin vidas
+            if (GameManager.getInstancia().getVidas() <= 0) {
+                lluvia.detener(); // Apagamos la música
+                estado = 2;       // Pasamos al estado "Game Over"
+            }
+            
+        } else if (estado == 2) {
+            // PANTALLA: GAME OVER
+            font.draw(batch, "GAME OVER", 360, 300);
+            font.draw(batch, "Lograste " + GameManager.getInstancia().getPuntos() + " puntos", 340, 260);
+            font.draw(batch, "Presiona ENTER para volver a jugar", 290, 220);
+            
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                iniciarJuego();
+            }
+        }
+        
+        batch.end();    
+    }
+    
+    @Override
+    public void dispose () {
+        tarro.destruir();
+        lluvia.destruir();
+        batch.dispose();
+        font.dispose();
+    }
+}
