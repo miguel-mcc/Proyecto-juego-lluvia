@@ -29,7 +29,7 @@ public abstract class Gota implements Colisionable {
     }
 
     public void dibujar(SpriteBatch batch) {
-        batch.draw(textura, area.x, area.y);
+    	batch.draw(textura, area.x, area.y, area.width, area.height);
     }
 
     // --- PATRÓN TEMPLATE METHOD ---

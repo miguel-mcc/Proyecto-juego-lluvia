@@ -19,6 +19,7 @@ public class GameLluvia extends ApplicationAdapter {
     private Tarro tarro;
     private Lluvia lluvia;
     
+    private Texture backgroundTexture;
     // VARIABLES DE ESTADO DEL JUEGO
     // 0 = Menú Principal | 1 = Jugando | 2 = Game Over
     private int estado = 0; 
@@ -31,8 +32,9 @@ public class GameLluvia extends ApplicationAdapter {
         Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
         tarro = new Tarro(new Texture(Gdx.files.internal("bucket.png")), hurtSound);
         
-        Texture gotaBuena = new Texture(Gdx.files.internal("drop.png"));
-        Texture gotaMala = new Texture(Gdx.files.internal("dropBad.png"));
+        Texture gotaBuena = new Texture(Gdx.files.internal("GotaBuena.png"));
+        Texture gotaMala = new Texture(Gdx.files.internal("GotaMala.png"));
+        backgroundTexture = new Texture(Gdx.files.internal("fondo.png"));
         Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
         Music rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
         
@@ -60,6 +62,9 @@ public class GameLluvia extends ApplicationAdapter {
         batch.begin();
         
         // --- MÁQUINA DE ESTADOS ---
+        if (backgroundTexture != null) {
+            batch.draw(backgroundTexture, 0, 0, 800, 480);
+        }
         
         if (estado == 0) {
             // PANTALLA: MENÚ PRINCIPAL
@@ -85,8 +90,8 @@ public class GameLluvia extends ApplicationAdapter {
             
             // Comprobar si nos quedamos sin vidas
             if (GameManager.getInstancia().getVidas() <= 0) {
-                lluvia.detener(); // Apagamos la música
-                estado = 2;       // Pasamos al estado "Game Over"
+                lluvia.detener();
+                estado = 2;
             }
             
         } else if (estado == 2) {
@@ -105,6 +110,9 @@ public class GameLluvia extends ApplicationAdapter {
     
     @Override
     public void dispose () {
+    	// DESTRUIR LA TEXTURA DEL FONDO
+        if (backgroundTexture != null) backgroundTexture.dispose();
+        
         tarro.destruir();
         lluvia.destruir();
         batch.dispose();
