@@ -1,5 +1,7 @@
 package puppy.code;
 
-public interface Colisionable {
+import com.badlogic.gdx.math.Rectangle;
 
+public interface Colisionable {
+    Rectangle getArea();
 }
