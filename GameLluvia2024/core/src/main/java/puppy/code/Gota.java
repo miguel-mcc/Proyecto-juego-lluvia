@@ -39,11 +39,10 @@ public abstract class Gota implements Colisionable {
         reproducirSonido();   
     }
 
-    // Método abstracto: cada hijo debe decir que hace
+    // Metodo abstracto: cada hijo debe decir que hace
     protected abstract void aplicarEfecto(Tarro tarro);
 
-    // Método Hook: comportamiento por defecto (nada), los hijos pueden sobrescribirlo
+    // Metodo Hook: comportamiento por defecto (nada), los hijos pueden sobrescribirlo
     protected void reproducirSonido() {
-        // Por defecto en silencio
     }
 }

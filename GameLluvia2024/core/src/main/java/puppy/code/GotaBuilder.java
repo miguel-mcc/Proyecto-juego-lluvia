@@ -14,10 +14,10 @@ public class GotaBuilder {
         // Valores por defecto
         this.x = 0;
         this.y = 480;
-        this.tipo = 1; // Gota buena por defecto
+        this.tipo = 1;
     }
 
-    // Los métodos retornan "this" para poder encadenarlos
+    // Los metodos retornan "this" para poder encadenarlos
     public GotaBuilder setPosicion(float x, float y) {
         this.x = x;
         this.y = y;

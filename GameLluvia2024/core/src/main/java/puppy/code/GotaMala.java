@@ -12,6 +12,4 @@ public class GotaMala extends Gota {
     protected void aplicarEfecto(Tarro tarro) {
         tarro.dañar(); 
     }
-    
-    // No sobrescribimos reproducirSonido() porque usamos el silencio del padre
 }

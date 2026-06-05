@@ -13,7 +13,6 @@ public class Tarro implements Colisionable {
     private Texture bucketImage;
     private Sound sonidoHerido;
     
-    // ¡BORRAMOS LAS VARIABLES VIDAS Y PUNTOS DE AQUÍ!
     private int velx = 400;
     private boolean herido = false;
     private int tiempoHeridoMax = 50;
@@ -46,7 +45,7 @@ public class Tarro implements Colisionable {
         bucket.height = BUCKET_HEIGHT;
     }
 
-    // Delegamos la pérdida de vida al Singleton
+    // Delegamos la perdida de vida al Singleton
     public void dañar() {
         GameManager.getInstancia().restarVida();
         herido = true;
@@ -75,7 +74,7 @@ public class Tarro implements Colisionable {
             bucket.x += velx * Gdx.graphics.getDeltaTime();
         }
 
-        // Encapsulamiento de límites (Que no se salga de los bordes)
+        // Encapsulamiento de limites para que no se salga de los bordes
         if (bucket.x < 0) {
             bucket.x = 0;
         }

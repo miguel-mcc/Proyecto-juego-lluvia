@@ -38,6 +38,7 @@ public class GameLluvia extends ApplicationAdapter {
         Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
         Music rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
         
+        rainMusic.setVolume(0.8f);
         lluvia = new Lluvia(gotaBuena, gotaMala, dropSound, rainMusic);
         
         camera = new OrthographicCamera();
@@ -45,12 +46,12 @@ public class GameLluvia extends ApplicationAdapter {
         batch = new SpriteBatch();
     }
     
-    // Método que prepara todo para empezar una partida nueva
+    // Metodo que prepara todo para empezar una partida nueva
     private void iniciarJuego() {
         GameManager.getInstancia().reiniciar(); // Resetea vidas y puntos
         tarro.crear();
         lluvia.crear();
-        estado = 1; // Pasamos al estado "Jugando"
+        estado = 1;
     }
 
     @Override
@@ -61,13 +62,12 @@ public class GameLluvia extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         
-        // --- MÁQUINA DE ESTADOS ---
+        //  MAQUINA DE ESTADOS 
         if (backgroundTexture != null) {
             batch.draw(backgroundTexture, 0, 0, 800, 480);
         }
         
         if (estado == 0) {
-            // PANTALLA: MENÚ PRINCIPAL
             font.draw(batch, "RECOLECTOR DE LLUVIA", 320, 300);
             font.draw(batch, "Presiona ENTER para comenzar", 300, 250);
             
@@ -76,9 +76,8 @@ public class GameLluvia extends ApplicationAdapter {
             }
             
         } else if (estado == 1) {
-            // PANTALLA: JUGANDO
             font.draw(batch, "Gotas totales: " + GameManager.getInstancia().getPuntos(), 5, 475);
-            font.draw(batch, "Vidas : " + GameManager.getInstancia().getVidas(), 720, 475);
+            font.draw(batch, "Vidas: " + GameManager.getInstancia().getVidas(), 720, 475);
             
             if (!tarro.estaHerido()) {
                 tarro.actualizarMovimiento();       
@@ -88,15 +87,13 @@ public class GameLluvia extends ApplicationAdapter {
             tarro.dibujar(batch);
             lluvia.actualizarDibujoLluvia(batch);
             
-            // Comprobar si nos quedamos sin vidas
             if (GameManager.getInstancia().getVidas() <= 0) {
                 lluvia.detener();
                 estado = 2;
             }
             
         } else if (estado == 2) {
-            // PANTALLA: GAME OVER
-            font.draw(batch, "GAME OVER", 360, 300);
+            font.draw(batch, "¡Has perdido!", 360, 300);
             font.draw(batch, "Lograste " + GameManager.getInstancia().getPuntos() + " puntos", 340, 260);
             font.draw(batch, "Presiona ENTER para volver a jugar", 290, 220);
             

@@ -1,7 +1,7 @@
 package puppy.code;
 
 public class GameManager {
-    // 1. La única instancia de la clase (estática y privada)
+    // 1. La unica instancia de la clase (estatica y privada)
     private static GameManager instancia;
     
     // Variables globales del juego
@@ -14,7 +14,7 @@ public class GameManager {
         this.vidas = 3;
     }
     
-    // 3. Método estático que devuelve la instancia única
+    // 3. Metodo estatico que devuelve la instancia unica
     public static GameManager getInstancia() {
         if (instancia == null) {
             instancia = new GameManager(); // Se crea solo la primera vez
@@ -22,7 +22,7 @@ public class GameManager {
         return instancia;
     }
 
-    // --- Getters y Setters normales ---
+    // Getters y Setters normales
     public int getPuntos() {
         return puntos;
     }
@@ -38,7 +38,7 @@ public class GameManager {
     public void restarVida() {
         this.vidas--;
     }
- // Método para reiniciar la partida
+ // Metodo para reiniciar la partida
     public void reiniciar() {
         this.puntos = 0;
         this.vidas = 3;
