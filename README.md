@@ -1,6 +1,6 @@
 # Recolector de Lluvia 🌧️
 
-¡Bienvenidos a **Recolector de Lluvia**! Este es el proyecto final desarrollado para la asignatura de **Programación Avanzada** utilizando **Java** y el framework **LibGDX**.
+Este es el proyecto final desarrollado para la asignatura de **Programación Avanzada** utilizando **Java** y el framework **LibGDX**.
 
 ---
 
