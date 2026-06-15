@@ -35,24 +35,19 @@ public class Lluvia {
         float x = MathUtils.random(0, 800 - 64);
         float y = 480;
         
-        // Iniciamos el constructor con la posicion
-        GotaBuilder builder = new GotaBuilder().setPosicion(x, y);
-        
         if (MathUtils.random(1, 10) < 3) {
-            // Ensamblamos una gota mala
-            builder.setTipo(2)
-                   .setTextura(gotaMala)
-                   .setEstrategia(new MovimientoZigZag());
+            // Ensamblamos una gota mala usando su Builder específico
+            GotaBuilder builder = new GotaMalaBuilder();
+            builder.setPosicion(x, y).setTextura(gotaMala).setEstrategia(new MovimientoZigZag());
+            gotas.add(builder.build());
         } else {
-            // Ensamblamos una gota buena
-            builder.setTipo(1)
-                   .setTextura(gotaBuena)
-                   .setSonido(dropSound)
-                   .setEstrategia(new MovimientoCaidaRecta());
+            // Ensamblamos una gota buena usando su Builder específico
+            GotaBuenaBuilder builder = new GotaBuenaBuilder();
+            builder.setSonido(dropSound);
+            builder.setPosicion(x, y).setTextura(gotaBuena).setEstrategia(new MovimientoCaidaRecta());
+            
+            gotas.add(builder.build());
         }
-        
-        // Fabricamos la gota y la añadimos a la lista
-        gotas.add(builder.build());
         lastDropTime = TimeUtils.nanoTime();
     }
     
@@ -63,7 +58,14 @@ public class Lluvia {
         
         for (int i = 0; i < gotas.size; i++) {
             Gota gota = gotas.get(i);
-            gota.caer(300, Gdx.graphics.getDeltaTime());
+            // mecanica nueva de dificultad
+            float velocidadDinamica = 200 + (GameManager.getInstancia().getPuntos() * 0.5f);
+            
+            if (velocidadDinamica > 600) {
+                velocidadDinamica = 600;
+            }
+
+            gota.caer(velocidadDinamica, Gdx.graphics.getDeltaTime());
             
             if(gota.getArea().y + 64 < 0) {
                 gotas.removeIndex(i); 

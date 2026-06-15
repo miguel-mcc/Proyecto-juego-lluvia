@@ -80,7 +80,13 @@ public class GameLluvia extends ApplicationAdapter {
             font.draw(batch, "Vidas: " + GameManager.getInstancia().getVidas(), 720, 475);
             
             if (!tarro.estaHerido()) {
-                tarro.actualizarMovimiento();       
+                // ahora GameLluvia controla el input y le da la orden al tarro
+                if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+                    tarro.moverIzquierda(Gdx.graphics.getDeltaTime());
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+                    tarro.moverDerecha(Gdx.graphics.getDeltaTime());
+                }
                 lluvia.actualizarMovimiento(tarro);    
             }
             

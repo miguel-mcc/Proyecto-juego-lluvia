@@ -65,19 +65,16 @@ public class Tarro implements Colisionable {
         }
     }
 
-    public void actualizarMovimiento() {
-        // Movimiento desde teclado
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            bucket.x -= velx * Gdx.graphics.getDeltaTime();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            bucket.x += velx * Gdx.graphics.getDeltaTime();
-        }
-
-        // Encapsulamiento de limites para que no se salga de los bordes
+    // nuevos metodos de movimiento encapsulados
+    public void moverIzquierda(float deltaTime) {
+        bucket.x -= velx * deltaTime;
         if (bucket.x < 0) {
             bucket.x = 0;
         }
+    }
+
+    public void moverDerecha(float deltaTime) {
+        bucket.x += velx * deltaTime;
         if (bucket.x > SCREEN_WIDTH - BUCKET_WIDTH) {
             bucket.x = SCREEN_WIDTH - BUCKET_WIDTH;
         }
